@@ -3,16 +3,23 @@ Tasks API
 Url Project
 
 https://github.com/abdozaky45/task-management
+
 Components
+
 User
+
 Category
+
 Task
+
 Installation
+
 Clone the repository or download the source code.
 
 Install the required dependencies by running the following command:
 
 npm install
+
 Create a .env file in the root directory of the project and add the following environment variables:
 
 DB_URL=your_database_url
