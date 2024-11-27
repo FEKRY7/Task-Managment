@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Signup/Login Test</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    async function handleCredentialResponse(response) {
+      // Extract the ID token
+      const idToken = response.credential;
+
+      try { 
+        // Send the token to your backend
+        const res = await fetch("http://localhost:3000/api/user/SignupOrloginWithGmail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ idToken }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          console.log("Success:", data);
+          alert(`Success: ${data.message}`);
+        } else {
+          console.error("Error:", data);
+          alert(`Error: ${data.message}`);
+        }
+      } catch (err) {
+        console.error("Request failed:", err);
+        alert("Request failed. Check console for details.");
+      }
+    }
+
+    function initializeGoogleSignIn() {
+      google.accounts.id.initialize({
+        client_id: "<YOUR_GOOGLE_CLIENT_ID>",
+        callback: handleCredentialResponse,
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("googleSignInButton"),
+        { theme: "outline", size: "large" } // Button configuration
+      );
+    }
+  </script>
+</head>
+<body onload="initializeGoogleSignIn()">
+  <div style="text-align: center; margin-top: 50px;">
+    <h1>Signup/Login with Google</h1>
+    <div id="googleSignInButton"></div>
+  </div>
+</body>
+</html>
